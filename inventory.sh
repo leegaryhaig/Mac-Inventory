@@ -28,7 +28,14 @@ echo Memory: $memory
 hdSize=$(df -H | grep 'disk1s1' | awk '{printf $2}')
 echo Storage: $hdSize
 
-ethernetAddress=$(ifconfig en0 | grep -w 'ether'| awk '{print $2}')
+ethernetAddress=$(networksetup -listallhardwareports | \
+                  grep --after-context=2 'Hardware Port: Ethernet' | \
+                  grep 'Ethernet Address:' | \
+                  awk '{print $3}')
 echo Ethernet MAC: $ethernetAddress
 
-WirelessAddress=$(ifconfig )
+WirelessAddress=$(networksetup -listallhardwareports | \
+                  grep --after-context=2 'Wi-Fi' | \
+                  grep 'Ethernet Address:' | \
+                  awk '{print $3}')
+echo Wi-Fi MAC: $WirelessAddress
